@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Toxic Comment Analyzer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="analyzer">
+
+<div class="container">
+  <h1>Toxic Comment Analyzer</h1>
+
+  <textarea id="toxicInput" placeholder="Type a comment to analyze..."></textarea>
+  
+  <div class="button-group">
+    <button onclick="analyzeToxic()">Analyze Comment</button>
+    <button class="secondary" onclick="openQA()">Ask a Question</button>
+  </div>
+
+  <div class="results" id="results">
+    <div class="status" id="status"></div>
+
+    <div class="metric"><span>Accuracy</span><span id="accuracy">0%</span></div>
+    <div class="progress"><div id="barAccuracy"></div></div>
+
+    <div class="metric"><span>Precision</span><span id="precision">0%</span></div>
+    <div class="progress"><div id="barPrecision"></div></div>
+
+    <div class="metric"><span>Recall</span><span id="recall">0%</span></div>
+    <div class="progress"><div id="barRecall"></div></div>
+
+    <div class="metric"><span>F1-Score</span><span id="f1">0%</span></div>
+    <div class="progress"><div id="barF1"></div></div>
+  </div>
+</div>
+
+<div class="modal" id="qaModal">
+  <div class="modal-content">
+    <span class="close" onclick="closeQA()">×</span>
+    <h2>💬 Ask a Question</h2>
+    <textarea id="qaInput" placeholder="Type your question here..."></textarea>
+    <button onclick="runQA()">Submit Question</button>
+    <div id="qaAnswer" class="answer-box" style="display:none;"></div>
+  </div>
+</div>
+
+<script>
+function analyzeToxic() {
+  const text = document.getElementById("toxicInput").value.trim();
+  if (!text) return alert("Please enter a comment.");
+
+  fetch("http://localhost:5000/analyze", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text })
+  })
+  .then(res => res.json())
+  .then(data => {
+    const results = document.getElementById("results");
+    const status = document.getElementById("status");
+
+    results.style.display = "block";
+
+    if (data.toxic) {
+      status.innerText = "🚨 Toxic comment detected";
+      status.style.background = "#ffe6e6";
+      status.style.color = "#e60000";
+    } else {
+      status.innerText = "✅ Non-toxic comment";
+      status.style.background = "#e6ffe6";
+      status.style.color = "#008000";
+    }
+
+    setMetric("accuracy", data.metrics.accuracy);
+    setMetric("precision", data.metrics.precision);
+    setMetric("recall", data.metrics.recall);
+    setMetric("f1", data.metrics.f1);
+  })
+  .catch(() => alert("Backend not reachable"));
+}
+
+function openQA() { document.getElementById("qaModal").style.display = "block"; }
+function closeQA() { document.getElementById("qaModal").style.display = "none"; }
+
+function runQA() {
+  const q = document.getElementById("qaInput").value.trim();
+  if (!q) return alert("Please enter a question.");
+
+  fetch("http://localhost:5000/qa", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question: q })
+  })
+  .then(res => res.json())
+  .then(data => {
+    const box = document.getElementById("qaAnswer");
+    box.style.display = "block";
+    box.innerText = data.answer;
+  })
+  .catch(() => alert("QA backend error"));
+}
+
+function setMetric(id, val) {
+  document.getElementById(id).innerText = val + "%";
+  document.getElementById("bar" + id.charAt(0).toUpperCase() + id.slice(1)).style.width = val + "%";
+}
+</script>
+
+</body>
+</html>

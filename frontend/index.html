@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toxic Comment Analyzer</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="homepage">
+
+<div class="container homepage-container">
+  <h1 class="hero-title">Toxic Comment Analyzer</h1>
+  <p class="hero-subtitle">Detect toxic comments instantly with AI-powered analysis and get instant answers to your questions.</p>
+  <a href="analyzer.html" class="btn-primary">Analyze Now</a>
+</div>
+
+<div class="hero-shape shape1"></div>
+<div class="hero-shape shape2"></div>
+<div class="hero-shape shape3"></div>
+<div class="hero-shape shape4"></div>
+
+<div class="scroll-indicator">
+  <span>↓</span>
+</div>
+
+<script>
+const shapes = document.querySelectorAll('.hero-shape');
+document.addEventListener('mousemove', e => {
+  shapes.forEach((shape, index) => {
+    const speed = (index + 1) * 0.02;
+    shape.style.transform = `translate(${e.clientX * speed}px, ${e.clientY * speed}px)`;
+  });
+});
+</script>
+
+</body>
+</html>
