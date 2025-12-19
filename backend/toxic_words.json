@@ -1,0 +1,18 @@
+{
+  "toxic": [
+    "hate", "stupid", "idiot", "trash", "ugly", "loser", "dumb", "worthless",
+    "pathetic", "incompetent", "jerk", "moron", "shame", "spineless", "weakling",
+    "disgusting", "garbage", "crap", "junk", "clueless", "inept", "lowlife",
+    "scum", "vile", "nasty", "annoying", "worthless", "lame", "absurd", "rude",
+    "lout", "ignoramus", "dolt", "blockhead", "bumble", "jerkface", "nitwit",
+    "reject", "scallywag", "buffoon", "gullible", "clown", "twit"
+  ],
+  "severe": [
+    "fuck", "fucking", "shit", "shitty", "bitch", "bastard", "asshole", "cunt",
+    "cock", "penis", "vagina", "cum", "dick", "piss", "shitface", "fucked",
+    "motherfucker", "whore", "slut", "cocksucker", "douche", "fuckwit",
+    "bollocks", "bugger", "wanker", "arsehole", "tosser", "twat",
+    "asswipe", "shithead", "fucknut", "jackass", "dipshit", "dickhead",
+    "twatwaffle", "shitsucker", "cumdumpster", "fuckbucket", "asshat", "shitbag"
+  ]
+}

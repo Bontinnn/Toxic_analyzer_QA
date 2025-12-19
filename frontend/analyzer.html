@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Toxic Comment Analyzer</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toxic Comment Analyzer</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="analyzer">
@@ -46,6 +46,8 @@
 </div>
 
 <script>
+let lastAnalysis = null;
+
 function analyzeToxic() {
   const text = document.getElementById("toxicInput").value.trim();
   if (!text) return alert("Please enter a comment.");
@@ -57,6 +59,8 @@ function analyzeToxic() {
   })
   .then(res => res.json())
   .then(data => {
+    lastAnalysis = data;
+
     const results = document.getElementById("results");
     const status = document.getElementById("status");
 
@@ -86,11 +90,17 @@ function closeQA() { document.getElementById("qaModal").style.display = "none"; 
 function runQA() {
   const q = document.getElementById("qaInput").value.trim();
   if (!q) return alert("Please enter a question.");
+  if (!lastAnalysis) return alert("Please analyze a comment first.");
 
   fetch("http://localhost:5000/qa", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ question: q })
+    body: JSON.stringify({
+      question: q,
+      toxic: lastAnalysis.toxic,
+      reason: lastAnalysis.reason,
+      metrics: lastAnalysis.metrics
+    })
   })
   .then(res => res.json())
   .then(data => {
